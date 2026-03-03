@@ -19,15 +19,11 @@ const SUPABASE_URL = 'https://asxqwynhxiooulythjvr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzeHF3eW5oeGlvb3VseXRoanZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0NTYzNTgsImV4cCI6MjA4ODAzMjM1OH0.6TD2XEZSOeWZssG1hSdqrB0DFiDZTyecu8afnTH8lAg';
 
 const supabaseClient = SUPABASE_URL ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-const USE_SUPABASE = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
+const USE_SUPABASE = false;
+const USE_JSON = true;
 
 // Fetch products from Supabase
 async function fetchProductsFromSupabase() {
-  console.log('Fetching from Supabase...');
-  if (!supabaseClient) {
-    console.log('No supabase client');
-    return null;
-  }
   try {
     const { data, error } = await supabaseClient
       .from('products')
@@ -182,26 +178,32 @@ function renderHomeProducts() {
   const el = document.getElementById('homeProducts');
   if (!el) return;
   
-  console.log('USE_SUPABASE:', USE_SUPABASE);
-  
-  if (USE_SUPABASE) {
+  if (USE_JSON) {
+    fetch('products.json')
+      .then(res => res.json())
+      .then(products => {
+        console.log('JSON products:', products.length);
+        el.innerHTML = products.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
+        refreshCursorTargets();
+      })
+      .catch(() => {
+        el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
+        refreshCursorTargets();
+      });
+  } else if (USE_SUPABASE) {
     el.innerHTML = '<p style="text-align:center;padding:40px;">Loading...</p>';
     fetchProductsFromSupabase().then(products => {
-      console.log('Products loaded:', products ? products.length : 0);
       if (products && products.length > 0) {
         el.innerHTML = products.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
       } else {
-        console.log('No products, using fallback');
         el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
       }
       refreshCursorTargets();
-    }).catch((err) => {
-      console.log('Error:', err);
+    }).catch(() => {
       el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
       refreshCursorTargets();
     });
   } else {
-    console.log('Using fallback data');
     el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
     refreshCursorTargets();
   }
