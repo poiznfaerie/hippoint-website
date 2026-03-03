@@ -176,14 +176,18 @@ function productCardHTML(p) {
 }
 
 function renderHomeProducts() {
+  console.log('renderHomeProducts called');
   const el = document.getElementById('homeProducts');
+  console.log('homeProducts element:', el);
   if (!el) return;
   
   if (USE_JSON) {
-    // Use embedded products from db-products.js
+    console.log('USE_JSON is true, dbProducts:', typeof dbProducts, dbProducts ? dbProducts.length : 'undefined');
     if (typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
+      console.log('Rendering', dbProducts.length, 'products');
       el.innerHTML = dbProducts.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
     } else {
+      console.log('Using fallback allProducts');
       el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
     }
     refreshCursorTargets();
