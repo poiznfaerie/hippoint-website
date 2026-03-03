@@ -7,7 +7,7 @@
   <h1>Loading products...</h1>
   <div id="products"></div>
   <script>
-    fetch('products.json')
+    fetch('https://raw.githubusercontent.com/poiznfaerie/hippoint-website/main/products.json')
       .then(r => r.json())
       .then(products => {
         document.querySelector('h1').textContent = 'Found ' + products.length + ' products';
