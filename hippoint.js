@@ -183,10 +183,23 @@ function renderHomeProducts() {
   if (el.dataset.rendered === 'true') return;
   el.dataset.rendered = 'true';
   
+  // TEST: Add a product with image directly
+  const testProduct = {
+    id: 999,
+    name: 'TEST DRESS',
+    image_url: 'https://i.imgur.com/kxck33K.jpeg',
+    emoji: '👗',
+    price: 10000,
+    badge: 'new'
+  };
+  
+  // First show the test product with image
+  el.innerHTML = productCardHTML(testProduct) + '<hr><h3>Other Products:</h3>';
+  
   if (USE_JSON && typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
-    el.innerHTML = dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
+    el.innerHTML += dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
   } else {
-    el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
+    el.innerHTML += allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
   }
   refreshCursorTargets();
 }
