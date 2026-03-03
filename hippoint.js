@@ -185,7 +185,7 @@ function renderHomeProducts() {
     console.log('USE_JSON is true, dbProducts:', typeof dbProducts, dbProducts ? dbProducts.length : 'undefined');
     if (typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
       console.log('Rendering', dbProducts.length, 'products');
-      el.innerHTML = dbProducts.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
+      el.innerHTML = dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
     } else {
       console.log('Using fallback allProducts');
       el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
