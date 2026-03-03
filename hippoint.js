@@ -14,7 +14,8 @@
 /* ══════════════════════════════════════════════════════════
    SUPABASE CONFIGURATION
    ══════════════════════════════════════════════════════════ */
-console.log('Hippoint: Loading...');
+/* Hippoint v2 */
+console.log('Hippoint: Loading v2...');
 const SUPABASE_URL = 'https://asxqwynhxiooulythjvr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzeHF3eW5oeGlvb3VseXRoanZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0NTYzNTgsImV4cCI6MjA4ODAzMjM1OH0.6TD2XEZSOeWZssG1hSdqrB0DFiDZTyecu8afnTH8lAg';
 
