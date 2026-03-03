@@ -179,17 +179,13 @@ function renderHomeProducts() {
   if (!el) return;
   
   if (USE_JSON) {
-    fetch('products.json')
-      .then(res => res.json())
-      .then(products => {
-        console.log('JSON products:', products.length);
-        el.innerHTML = products.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
-        refreshCursorTargets();
-      })
-      .catch(() => {
-        el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
-        refreshCursorTargets();
-      });
+    // Use embedded products from db-products.js
+    if (typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
+      el.innerHTML = dbProducts.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
+    } else {
+      el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
+    }
+    refreshCursorTargets();
   } else if (USE_SUPABASE) {
     el.innerHTML = '<p style="text-align:center;padding:40px;">Loading...</p>';
     fetchProductsFromSupabase().then(products => {
