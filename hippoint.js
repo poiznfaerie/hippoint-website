@@ -110,7 +110,6 @@ function navigate(page) {
    ══════════════════════════════════════════════════════════ */
 // Normalize product data from Supabase
 function normalizeProduct(p) {
-  console.log('normalizeProduct input:', p.name, 'image_url:', p.image_url);
   return {
     id: p.id,
     name: p.name,
@@ -131,7 +130,6 @@ function normalizeProduct(p) {
 function productCardHTML(p) {
   // Normalize if coming from Supabase
   const product = normalizeProduct(p);
-  console.log('productCardHTML:', product.name, 'imageUrl:', product.imageUrl);
   
   const badge    = product.badge
     ? `<div class="product-badge ${product.badge}">${product.badge === 'new' ? 'New' : 'Sale'}</div>`
@@ -178,38 +176,19 @@ function productCardHTML(p) {
 }
 
 function renderHomeProducts() {
-  console.log('renderHomeProducts called');
   const el = document.getElementById('homeProducts');
-  console.log('homeProducts element:', el);
   if (!el) return;
   
-  if (USE_JSON) {
-    console.log('USE_JSON is true, dbProducts:', typeof dbProducts, dbProducts ? dbProducts.length : 'undefined');
-    if (typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
-      console.log('Rendering', dbProducts.length, 'products');
-      el.innerHTML = dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
-    } else {
-      console.log('Using fallback allProducts');
-      el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
-    }
-    refreshCursorTargets();
-  } else if (USE_SUPABASE) {
-    el.innerHTML = '<p style="text-align:center;padding:40px;">Loading...</p>';
-    fetchProductsFromSupabase().then(products => {
-      if (products && products.length > 0) {
-        el.innerHTML = products.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
-      } else {
-        el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
-      }
-      refreshCursorTargets();
-    }).catch(() => {
-      el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
-      refreshCursorTargets();
-    });
+  // Prevent duplicate rendering
+  if (el.dataset.rendered === 'true') return;
+  el.dataset.rendered = 'true';
+  
+  if (USE_JSON && typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
+    el.innerHTML = dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
   } else {
     el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
-    refreshCursorTargets();
   }
+  refreshCursorTargets();
 }
 
 function renderShopProducts(data) {
