@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hippoint Test</title>
+</head>
+<body>
+  <h1>Loading products...</h1>
+  <div id="products"></div>
+  <script>
+    fetch('products.json')
+      .then(r => r.json())
+      .then(products => {
+        document.querySelector('h1').textContent = 'Found ' + products.length + ' products';
+        document.getElementById('products').innerHTML = products.map(p => 
+          '<div style="border:1px solid #ccc;padding:10px;margin:5px;">' +
+            (p.image_url ? '<img src="'+p.image_url+'" style="width:100px;height:100px;object-fit:cover;">' : p.emoji) +
+            '<br><b>'+p.name+'</b> - ₦'+p.price +
+          '</div>'
+        ).join('');
+      })
+      .catch(e => {
+        document.querySelector('h1').textContent = 'Error: ' + e.message;
+      });
+  </script>
+</body>
+</html>
