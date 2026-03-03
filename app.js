@@ -23,13 +23,18 @@ const USE_SUPABASE = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 // Fetch products from Supabase
 async function fetchProductsFromSupabase() {
-  if (!supabaseClient) return null;
+  console.log('Fetching from Supabase...');
+  if (!supabaseClient) {
+    console.log('No supabase client');
+    return null;
+  }
   try {
     const { data, error } = await supabaseClient
       .from('products')
       .select('*')
       .eq('active', true)
       .order('created_at', { ascending: false });
+    console.log('Supabase response:', data, error);
     if (error) throw error;
     return data;
   } catch (err) {
@@ -177,20 +182,26 @@ function renderHomeProducts() {
   const el = document.getElementById('homeProducts');
   if (!el) return;
   
+  console.log('USE_SUPABASE:', USE_SUPABASE);
+  
   if (USE_SUPABASE) {
     el.innerHTML = '<p style="text-align:center;padding:40px;">Loading...</p>';
     fetchProductsFromSupabase().then(products => {
+      console.log('Products loaded:', products ? products.length : 0);
       if (products && products.length > 0) {
         el.innerHTML = products.slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
       } else {
+        console.log('No products, using fallback');
         el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
       }
       refreshCursorTargets();
-    }).catch(() => {
+    }).catch((err) => {
+      console.log('Error:', err);
       el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
       refreshCursorTargets();
     });
   } else {
+    console.log('Using fallback data');
     el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
     refreshCursorTargets();
   }
