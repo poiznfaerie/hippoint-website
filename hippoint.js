@@ -110,6 +110,7 @@ function navigate(page) {
    ══════════════════════════════════════════════════════════ */
 // Normalize product data from Supabase
 function normalizeProduct(p) {
+  console.log('normalizeProduct input:', p.name, 'image_url:', p.image_url);
   return {
     id: p.id,
     name: p.name,
@@ -130,6 +131,7 @@ function normalizeProduct(p) {
 function productCardHTML(p) {
   // Normalize if coming from Supabase
   const product = normalizeProduct(p);
+  console.log('productCardHTML:', product.name, 'imageUrl:', product.imageUrl);
   
   const badge    = product.badge
     ? `<div class="product-badge ${product.badge}">${product.badge === 'new' ? 'New' : 'Sale'}</div>`
