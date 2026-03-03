@@ -176,6 +176,7 @@ function productCardHTML(p) {
 }
 
 function renderHomeProducts() {
+  alert('renderHomeProducts called!');
   const el = document.getElementById('homeProducts');
   if (!el) return;
   
