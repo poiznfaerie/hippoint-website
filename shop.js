@@ -544,7 +544,15 @@ document.getElementById('newsletterBtn').addEventListener('click', function () {
 /* ══════════════════════════════════════════════════════════
    INITIALISE
    ══════════════════════════════════════════════════════════ */
+alert('Shop.js loaded!');
+console.log('Shop.js running...');
 updateCartUI();
-renderHomeProducts();
+try {
+  alert('About to call renderHomeProducts');
+  renderHomeProducts();
+  alert('Done calling renderHomeProducts');
+} catch(e) {
+  alert('Error: ' + e.message);
+}
 initReveal();
 refreshCursorTargets();
