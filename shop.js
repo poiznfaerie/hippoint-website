@@ -15,7 +15,7 @@
    SUPABASE CONFIGURATION
    ══════════════════════════════════════════════════════════ */
 /* Hippoint v2 */
-alert('Shop.js file is executing!');
+// alert removed
 console.log('Hippoint: Loading v2...');
 const SUPABASE_URL = 'https://asxqwynhxiooulythjvr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzeHF3eW5oeGlvb3VseXRoanZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0NTYzNTgsImV4cCI6MjA4ODAzMjM1OH0.6TD2XEZSOeWZssG1hSdqrB0DFiDZTyecu8afnTH8lAg';
@@ -177,7 +177,7 @@ function productCardHTML(p) {
 }
 
 function renderHomeProducts() {
-  alert('renderHomeProducts called!');
+  // Rendering products
   const el = document.getElementById('homeProducts');
   if (!el) return;
   
@@ -185,23 +185,11 @@ function renderHomeProducts() {
   if (el.dataset.rendered === 'true') return;
   el.dataset.rendered = 'true';
   
-  // TEST: Add a product with image directly
-  const testProduct = {
-    id: 999,
-    name: 'TEST DRESS',
-    image_url: 'https://i.imgur.com/kxck33K.jpeg',
-    emoji: '👗',
-    price: 10000,
-    badge: 'new'
-  };
-  
-  // First show the test product with image
-  el.innerHTML = productCardHTML(testProduct) + '<hr><h3>Other Products:</h3>';
-  
+  // Load products from db-products.js
   if (USE_JSON && typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
-    el.innerHTML += dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
+    el.innerHTML = dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
   } else {
-    el.innerHTML += allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
+    el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
   }
   refreshCursorTargets();
 }
@@ -545,15 +533,15 @@ document.getElementById('newsletterBtn').addEventListener('click', function () {
 /* ══════════════════════════════════════════════════════════
    INITIALISE
    ══════════════════════════════════════════════════════════ */
-alert('Shop.js loaded!');
+console.log('Hippoint: Shop.js loaded');
 console.log('Shop.js running...');
 updateCartUI();
 try {
-  alert('About to call renderHomeProducts');
+  // Render home products
   renderHomeProducts();
-  alert('Done calling renderHomeProducts');
+  // Done
 } catch(e) {
-  alert('Error: ' + e.message);
+  console.error('Error:', e.message);
 }
 initReveal();
 refreshCursorTargets();
