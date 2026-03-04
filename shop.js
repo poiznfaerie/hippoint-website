@@ -534,6 +534,8 @@ document.getElementById('newsletterBtn').addEventListener('click', function () {
    INITIALISE
    ══════════════════════════════════════════════════════════ */
 console.log('Hippoint: Shop.js loaded');
+console.log('USE_JSON:', USE_JSON);
+console.log('dbProducts available:', typeof dbProducts !== 'undefined');
 console.log('Shop.js running...');
 updateCartUI();
 try {
