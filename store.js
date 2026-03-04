@@ -187,7 +187,7 @@ function renderHomeProducts() {
   
   // Load products from db-products.js
   if (USE_JSON && typeof dbProducts !== 'undefined' && dbProducts.length > 0) {
-    el.innerHTML = dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
+    console.log("Rendering products:", dbProducts.slice(0,2).map(p => normalizeProduct(p))); el.innerHTML = dbProducts.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8).map(p => productCardHTML(normalizeProduct(p))).join('');
   } else {
     el.innerHTML = allProducts.slice(0, 8).map(p => productCardHTML(p)).join('');
   }
